@@ -30,15 +30,15 @@ public class TwoThread {
     public static void main(String[] args) {
         TwoThread twoThread = new TwoThread();
 
-        Thread t1 = new Thread(new OuNum(twoThread));
+        Thread t0 = new Thread(new OuNum(twoThread));
+        t0.setName("t0");
+
+
+        Thread t1 = new Thread(new JiNum(twoThread));
         t1.setName("t1");
 
-
-        Thread t2 = new Thread(new JiNum(twoThread));
-        t2.setName("t2");
-
+        t0.start();
         t1.start();
-        t2.start();
     }
 
     /**
@@ -54,26 +54,16 @@ public class TwoThread {
 
         @Override
         public void run() {
-            while (number.start <= 100) {
-
-                if (number.flag) {
-                    try {
+            while (number.start <= 10000) {
+                try {
                         LOCK.lock();
-                        System.out.println(Thread.currentThread().getName() + "+-+" + number.start);
-                        number.start++;
-                        number.flag = false;
-
-
+                        if (number.flag) {
+                            System.out.println(Thread.currentThread().getName() + "+-+" + number.start);
+                            number.start++;
+                            number.flag = false;
+                        }
                     } finally {
                         LOCK.unlock();
-                    }
-                } else {
-                    try {
-                        //防止线程空转
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
@@ -92,27 +82,17 @@ public class TwoThread {
 
         @Override
         public void run() {
-            while (number.start <= 100) {
-
-                if (!number.flag) {
-                    try {
-                        LOCK.lock();
+            while (number.start <= 10000) {
+                try {
+                    LOCK.lock();
+                    if (!number.flag) {
                         System.out.println(Thread.currentThread().getName() + "+-+" + number.start);
                         number.start++;
                         number.flag = true;
-
-
-                    } finally {
-                        LOCK.unlock();
                     }
-                } else {
-                    try {
-                        //防止线程空转
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+                } finally {
+                    LOCK.unlock();
+                } 
             }
         }
     }
