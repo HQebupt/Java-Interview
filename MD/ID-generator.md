@@ -37,3 +37,5 @@ A 库的递增方式可以是 `0 ,2 ,4 ,6`。B 库则是 `1 ,3 ,5 ,7`。这样�
 ## Twitter 雪花算法
 
 可以基于 `Twitter` 的 `Snowflake` 算法来实现。它主要是一种划分命名空间的算法，将生成的 ID 按照机器、时间等来进行标志。
+
+细节实现：[SnowFlake.md](https://github.com/HQebupt/Java-Interview/blob/downdown/MD/SnowFlake.md)
